@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minha Biblioteca</title>
+<style>
+:root{--bg:#fafafa;--fg:#111;--mut:#666;--ac:#5865f2;--card:#fff;--bd:#e4e4e4}
+@media (prefers-color-scheme:dark){:root{--bg:#121212;--fg:#eee;--mut:#9a9a9a;--card:#1c1c1c;--bd:#2c2c2c}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;font:16px/1.5 system-ui,sans-serif;background:var(--bg);color:var(--fg)}
+header,main,footer{max-width:960px;margin:0 auto;padding:16px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.logo{font-weight:700;font-size:20px;color:var(--fg);text-decoration:none}
+nav{display:flex;flex-wrap:wrap;gap:6px}
+nav a{padding:6px 12px;border-radius:999px;color:var(--mut);text-decoration:none;border:1px solid var(--bd)}
+nav a.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:6px}
+.card img,.sem-capa{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:8px;background:var(--bd)}
+.sem-capa{display:flex;align-items:center;justify-content:center;color:var(--mut)}
+.card h3{font-size:16px;margin:4px 0 0}
+.card p{font-size:14px;color:var(--mut);margin:0;flex:1}
+.btn{display:inline-block;background:var(--ac);color:#fff;border:0;border-radius:8px;padding:10px 14px;text-decoration:none;font:inherit;cursor:pointer;align-self:flex-start}
+.sec{background:transparent;color:var(--fg);border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font:inherit;cursor:pointer}
+label{display:flex;flex-direction:column;gap:4px;margin:10px 0;font-size:14px;color:var(--mut)}
+input,select,textarea{font:inherit;padding:9px;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--fg)}
+.row{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd)}
+.status,.vazio{color:var(--mut)}
+section{margin-top:12px}
+h2{margin:8px 0}
+footer{border-top:1px solid var(--bd);margin-top:32px;font-size:14px;color:var(--mut)}
+footer nav a{border:0;padding:4px 6px;color:var(--mut)}
+</style>
+</head>
+<body>
+<header>
+<a class="logo" href="#inicio" data-nome>Minha Biblioteca</a>
+<nav>
+<a href="#inicio">Início</a><a href="#livros">Livros</a><a href="#mangas">Mangás</a><a href="#obras">Obras</a><a href="#discord">Discord</a><a href="#admin" data-dono hidden>Admin</a>
+</nav>
+</header>
+
+<main>
+<section data-v="inicio,livros,mangas,obras">
+<p data-sobre></p>
+<p class="status" id="status">Carregando…</p>
+<div class="grid" id="cards"></div>
+</section>
+
+<section data-v="discord" hidden>
+<h2>Comunidade no Discord</h2>
+<p>Entre no servidor para conversar, tirar dúvidas e acompanhar novidades.</p>
+<a class="btn" data-discord target="_blank" rel="noopener">Entrar no Discord</a>
+</section>
+
+<section data-v="admin" hidden>
+<div id="login" hidden>
+<h2>Entrar como dono</h2>
+<p class="status">Cole o token do GitHub. Ele fica salvo só neste navegador.</p>
+<label>Token<input id="tk" type="password" autocomplete="off"></label>
+<p><button class="btn" id="btk">Entrar</button> <span class="status" id="lstatus"></span></p>
+</div>
+<div id="painel" hidden>
+<h2>Painel (só você vê)</h2>
+<h3 id="ftitle">Novo item</h3>
+<label>Título<input id="f-titulo"></label>
+<label>Tipo<select id="f-tipo"><option value="livro">Livro</option><option value="manga">Mangá</option><option value="obra">Obra</option></select></label>
+<label>Descrição<textarea id="f-desc" rows="3"></textarea></label>
+<label>Capa (imagem)<input id="f-capa" type="file" accept="image/*"></label>
+<label>Arquivo (PDF, até 20 MB)<input id="f-arquivo" type="file" accept="application/pdf"></label>
+<label>Ou link do arquivo<input id="f-link" placeholder="https://..."></label>
+<p><button class="btn" id="bsalvar">Publicar</button> <button class="sec" id="bcancel" hidden>Cancelar</button> <span class="status" id="fstatus"></span></p>
+<h3>Publicados</h3>
+<div id="alist"></div>
+<h3>Configurações do site</h3>
+<label>Nome do site<input id="c-nome"></label>
+<label>Frase de apresentação<input id="c-sobre"></label>
+<label>Link do Discord<input id="c-discord"></label>
+<label>E-mail de contato (usado no DMCA)<input id="c-email" type="email"></label>
+<p><button class="btn" id="bcfg">Salvar configurações</button> <span class="status" id="cstatus"></span></p>
+<p><button class="sec" id="bsair">Sair deste navegador</button></p>
+</div>
+</section>
+
+<section data-v="diretrizes" hidden>
+<h2>Diretrizes da comunidade</h2>
+<p>Publique apenas obras de sua autoria ou que você tenha autorização para compartilhar. Ao usar o site e o Discord, você concorda em:</p>
+<ul>
+<li>respeitar autores e criadores;</li>
+<li>não publicar conteúdo sexual envolvendo menores, discurso de ódio, ameaças, golpes, spam ou material ilegal;</li>
+<li>manter o respeito nas conversas, sem assédio, ofensas ou exposição de dados de outras pessoas.</li>
+</ul>
+<p>Conteúdos que descumpram estas regras podem ser removidos sem aviso prévio.</p>
+</section>
+
+<section data-v="dmca" hidden>
+<h2>Política DMCA</h2>
+<p>Respeitamos os direitos autorais. Se você é titular de uma obra publicada aqui sem autorização, envie uma notificação com:</p>
+<ol>
+<li>identificação da obra protegida e, se possível, onde ela foi publicada originalmente;</li>
+<li>identificação do conteúdo que pede remoção e o link onde ele está no site;</li>
+<li>seus dados de contato (nome, endereço, telefone e e-mail);</li>
+<li>declaração de boa-fé de que o uso não foi autorizado pelo titular, por seu representante ou pela lei;</li>
+<li>declaração, sob pena de falso testemunho, de que as informações são exatas e de que você é o titular ou está autorizado a agir em nome dele;</li>
+<li>sua assinatura, física ou eletrônica.</li>
+</ol>
+<p>Envie para <span data-email></span>. Ao receber uma notificação válida, o conteúdo poderá ser removido do site e do repositório. Quem teve conteúdo removido pode enviar uma contranotificação para o mesmo e-mail. Esta política também segue a Lei 9.610/1998.</p>
+</section>
+
+<section data-v="termos" hidden>
+<h2>Termos de uso</h2>
+<p>Ao publicar conteúdo aqui, você declara que tem os direitos sobre ele ou autorização para compartilhá-lo. O site é oferecido como está, sem garantia de disponibilidade. O administrador pode remover ou alterar conteúdos a qualquer momento. O uso de cada obra segue as condições indicadas na própria publicação.</p>
+</section>
+
+<section data-v="privacidade" hidden>
+<h2>Privacidade</h2>
+<p>Este site não coleta dados pessoais dos visitantes. O conteúdo fica no repositório público do GitHub, que segue as próprias políticas de privacidade. O token de acesso do administrador fica salvo apenas no navegador dele.</p>
+</section>
+
+<section data-v="contato" hidden>
+<h2>Contato</h2>
+<p>E-mail: <span data-email></span></p>
+<p>Você também pode falar pelo Discord.</p>
+</section>
+</main>
+
+<footer>
+<nav>
+<a href="#diretrizes">Diretrizes</a>
+<a href="#dmca">DMCA</a>
+<a href="#termos">Termos</a>
+<a href="#privacidade">Privacidade</a>
+<a href="#contato">Contato</a>
+<a data-discord target="_blank" rel="noopener">Discord</a>
+</nav>
+<p>© <span id="ano"></span> <span data-nome></span></p>
+</footer>
+
+<script>
+const VIEWS=["inicio","livros","mangas","obras","discord","admin","diretrizes","dmca","termos","privacidade","contato"];
+const DEF={nome:"Minha Biblioteca",sobre:"Livros, mangás e obras autorais.",discord:"https://discord.gg/VVkCX8zZpC",email:""};
+const TIPO={livro:"Livro",manga:"Mangá",obra:"Obra"};
+const FILTRO={livros:"livro",mangas:"manga",obras:"obra"};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+const safe=u=>/^(https?:\/\/|arquivos\/)/.test(u||"")?u:"#";
+const msg=(t,el="#status")=>{$(el).textContent=t};
+const OWNER=location.hostname.split(".")[0];
+const REPO=location.pathname.split("/")[1]||OWNER+".github.io";
+const API="https://api.github.com/repos/"+OWNER+"/"+REPO+"/contents/";
+const enc=new TextEncoder(),dec=new TextDecoder();
+const b64=u=>{let s="";for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode(...u.subarray(i,i+0x8000));return btoa(s)};
+const unb64=s=>Uint8Array.from(atob(s.replace(/\s/g,"")),c=>c.charCodeAt(0));
+const tk=()=>localStorage.getItem("gh_token");
+let D={config:{},itens:[]},loaded=false,editing=null;
+
+async function gh(path,opt={}){
+  const r=await fetch(API+path,{...opt,headers:{Authorization:"Bearer "+tk(),Accept:"application/vnd.github+json","Content-Type":"application/json"}});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(j.message||("erro "+r.status));
+  return j;
+}
+
+async function carregar(){
+  try{D=await (await fetch("dados.json?v="+Date.now(),{cache:"no-store"})).json();msg("")}
+  catch(e){msg("Não consegui carregar o conteúdo agora. Tente recarregar a página.")}
+  D.config={...DEF,...(D.config||{})};D.itens=D.itens||[];
+  loaded=true;applyCfg();route();
+}
+
+const ordenados=()=>[...D.itens].sort((a,b)=>(b.criado||0)-(a.criado||0));
+
+function card(i){
+  return `<article class="card">${i.capa?`<img src="${safe(i.capa)}" alt="" loading="lazy">`:`<div class="sem-capa">${esc(TIPO[i.tipo])}</div>`}<h3>${esc(i.titulo)}</h3><p>${esc(i.descricao)}</p>${i.arquivo?`<a class="btn" href="${safe(i.arquivo)}" target="_blank" rel="noopener">Abrir</a>`:""}</article>`;
+}
+
+function render(){
+  if(!loaded)return;
+  const f=FILTRO[location.hash.slice(1)];
+  const lista=ordenados().filter(i=>!f||i.tipo===f);
+  $("#cards").innerHTML=lista.length?lista.map(card).join(""):'<p class="vazio">Nada publicado aqui ainda.</p>';
+  $("#alist").innerHTML=ordenados().map(i=>`<div class="row"><span>${esc(i.titulo)} <small>(${esc(TIPO[i.tipo])})</small></span><span><button class="sec" data-act="edit" data-id="${esc(i.id)}">Editar</button> <button class="sec" data-act="del" data-id="${esc(i.id)}">Apagar</button></span></div>`).join("")||'<p class="vazio">Nenhum item ainda.</p>';
+}
+
+function route(){
+  let v=location.hash.slice(1)||"inicio";
+  if(!VIEWS.includes(v))v="inicio";
+  document.querySelectorAll("[data-v]").forEach(s=>s.hidden=!s.dataset.v.split(",").includes(v));
+  document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+v));
+  $("[data-dono]").hidden=!tk();
+  $("#login").hidden=!!tk();$("#painel").hidden=!tk();
+  if(v==="admin"&&tk())fillCfg();
+  render();scrollTo(0,0);
+}
+
+function applyCfg(){
+  const c=D.config;
+  document.querySelectorAll("[data-nome]").forEach(e=>e.textContent=c.nome);
+  document.querySelectorAll("[data-sobre]").forEach(e=>e.textContent=c.sobre);
+  document.querySelectorAll("[data-discord]").forEach(e=>e.href=safe(c.discord));
+  document.querySelectorAll("[data-email]").forEach(e=>e.textContent=c.email||"ainda não configurado");
+  document.title=c.nome;$("#ano").textContent=new Date().getFullYear();
+}
+
+function fillCfg(){
+  const c=D.config;
+  $("#c-nome").value=c.nome||"";$("#c-sobre").value=c.sobre||"";$("#c-discord").value=c.discord||"";$("#c-email").value=c.email||"";
+}
+
+async function entrar(){
+  const t=$("#tk").value.trim();if(!t)return;
+  msg("Verificando…","#lstatus");
+  try{
+    const r=await fetch("https://api.github.com/repos/"+OWNER+"/"+REPO,{headers:{Authorization:"Bearer "+t,Accept:"application/vnd.github+json"}});
+    if(!r.ok)throw new Error("token inválido");
+    localStorage.setItem("gh_token",t);$("#tk").value="";msg("","#lstatus");route();
+  }catch(e){msg("Não entrou: "+e.message,"#lstatus")}
+}
+
+function sair(){localStorage.removeItem("gh_token");route()}
+
+async function gravar(mudar,texto){
+  const cur=await gh("dados.json");
+  const d=JSON.parse(dec.decode(unb64(cur.content)));
+  mudar(d);
+  d.config={...DEF,...(d.config||{})};d.itens=d.itens||[];
+  await gh("dados.json",{method:"PUT",body:JSON.stringify({message:texto,content:b64(enc.encode(JSON.stringify(d,null,2))),sha:cur.sha})});
+  D=d;render();applyCfg();
+}
+
+async function enviar(file){
+  const nome="arquivos/"+Date.now()+"-"+file.name.replace(/[^\w.-]+/g,"-");
+  await gh(nome,{method:"PUT",body:JSON.stringify({message:"Adiciona "+file.name,content:b64(new Uint8Array(await file.arrayBuffer()))})});
+  return nome;
+}
+
+async function salvarItem(){
+  msg("Publicando…","#fstatus");
+  try{
+    const titulo=$("#f-titulo").value.trim();if(!titulo)throw new Error("coloque um título");
+    const fc=$("#f-capa").files[0],fa=$("#f-arquivo").files[0];
+    let link=$("#f-link").value.trim();
+    if(link&&!/^https?:\/\//.test(link))link="https://"+link;
+    let capa=editing?.capa||"",arquivo=editing?.arquivo||"";
+    if(fc)capa=await enviar(fc);
+    if(fa)arquivo=await enviar(fa);else if(link)arquivo=link;
+    const id=editing?.id||Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+    const item={id,titulo,tipo:$("#f-tipo").value,descricao:$("#f-desc").value.trim(),capa,arquivo,criado:editing?.criado||Date.now()};
+    await gravar(d=>{d.itens=d.itens.filter(i=>i.id!==id);d.itens.push(item)},"Publica: "+titulo);
+    limparForm();msg("Publicado! O site atualiza em 1 a 2 minutos.","#fstatus");
+  }catch(e){msg("Não deu: "+e.message,"#fstatus")}
+}
+
+function editar(id){
+  editing=D.itens.find(i=>i.id===id);if(!editing)return;
+  $("#f-titulo").value=editing.titulo||"";$("#f-tipo").value=editing.tipo||"livro";$("#f-desc").value=editing.descricao||"";
+  $("#f-link").value=/^https?:/.test(editing.arquivo||"")?editing.arquivo:"";
+  $("#ftitle").textContent="Editando: "+(editing.titulo||"");$("#bsalvar").textContent="Salvar alterações";$("#bcancel").hidden=false;
+  scrollTo(0,0);
+}
+
+function limparForm(){
+  editing=null;["#f-titulo","#f-desc","#f-link","#f-capa","#f-arquivo"].forEach(s=>$(s).value="");
+  $("#f-tipo").value="livro";$("#ftitle").textContent="Novo item";$("#bsalvar").textContent="Publicar";$("#bcancel").hidden=true;
+}
+
+async function apagar(id,b){
+  if(b.dataset.ok!=="1"){b.dataset.ok="1";b.textContent="Confirmar?";return}
+  msg("Apagando…","#fstatus");
+  try{
+    const item=D.itens.find(i=>i.id===id)||{};
+    await gravar(d=>{d.itens=d.itens.filter(i=>i.id!==id)},"Remove: "+(item.titulo||id));
+    for(const p of [item.capa,item.arquivo]){
+      if(!p||!p.startsWith("arquivos/"))continue;
+      try{const f=await gh(p);await gh(p,{method:"DELETE",body:JSON.stringify({message:"Remove arquivo",sha:f.sha})})}catch(e){}
+    }
+    msg("Apagado. O site atualiza em 1 a 2 minutos.","#fstatus");
+  }catch(e){msg("Não apagou: "+e.message,"#fstatus")}
+}
+
+async function salvarCfg(){
+  msg("Salvando…","#cstatus");
+  try{
+    const c={nome:$("#c-nome").value.trim()||DEF.nome,sobre:$("#c-sobre").value.trim(),discord:$("#c-discord").value.trim(),email:$("#c-email").value.trim()};
+    await gravar(d=>{d.config=c},"Atualiza configurações");
+    msg("Configurações salvas. O site atualiza em 1 a 2 minutos.","#cstatus");
+  }catch(e){msg("Não salvou: "+e.message,"#cstatus")}
+}
+
+$("#btk").onclick=entrar;
+$("#bsair").onclick=sair;
+$("#bsalvar").onclick=salvarItem;
+$("#bcancel").onclick=limparForm;
+$("#bcfg").onclick=salvarCfg;
+$("#alist").onclick=e=>{const b=e.target.closest("button");if(!b)return;b.dataset.act==="edit"?editar(b.dataset.id):apagar(b.dataset.id,b)};
+addEventListener("hashchange",route);
+route();carregar();
+</script>
+</body>
+</html>
