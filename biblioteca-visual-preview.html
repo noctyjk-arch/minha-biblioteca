@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Minha Biblioteca
+  </title>
+  <style>
+   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=DM+Serif+Display&display=swap');
+:root {
+  --bg:#fff9fc;
+  --fg:#49313f;
+  --mut:#987f8c;
+  --pink:#e78eae;
+  --pink2:#c96591;
+  --line:#f0dce6;
+  --paper:#fff;
+  --soft:#fff0f6;
+  --shadow:0 12px 34px rgba(133,74,102,.08)
+}
+* {
+  box-sizing:border-box;
+  scroll-behavior:smooth
+}
+[hidden] {
+  display:none!important
+}
+body {
+  margin:0;
+  min-height:100vh;
+  color:var(--fg);
+  font:14px/1.7 'Nunito',sans-serif;
+  background:radial-gradient(ellipse at 8% 0%,#ffe6f0 0,transparent 29%),radial-gradient(ellipse at 100% 40%,#f9eaf4 0,transparent 30%),var(--bg)
+}
+a {
+  color:inherit
+}
+.topline {
+  height:4px;
+  background:linear-gradient(90deg,#f6c4d7,#d978a0,#b58acb,#f6c4d7)
+}
+header {
+  position:sticky;
+  top:0;
+  z-index:20;
+  max-width:none;
+  margin:0;
+  padding:13px max(4vw,22px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
+  background:rgba(255,250,252,.91);
+  border-bottom:1px solid #f2dfe7;
+  backdrop-filter:blur(18px)
+}
+.logo {
+  font-size:23px;
+  font-weight:900;
+  letter-spacing:-1px;
+  color:#c96691;
+  text-decoration:none;
+  white-space:nowrap
+}
+.logo:before {
+  content:'✿';
+  font-size:20px;
+  margin-right:9px;
+  color:#e9a1bc
+}
+nav {
+  display:flex;
+  align-items:center;
+  gap:5px;
+  flex-wrap:wrap
+}
+nav a {
+  padding:8px 13px;
+  border-radius:10px;
+  color:#8f7482;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:900;
+  transition:.2s
+}
+nav a:hover,nav a.on {
+  background:#fceaf1;
+  color:#c65f8b
+}
+.header-right {
+  display:flex;
+  align-items:center;
+  gap:10px
+}
+.header-tag {
+  font-size:10px;
+  letter-spacing:1.4px;
+  color:#c18a9f;
+  font-weight:900;
+  text-transform:uppercase
+}
+.hero {
+  max-width:1240px;
+  margin:25px auto 0;
+  padding:0 25px
+}
+.hero-inner {
+  position:relative;
+  min-height:250px;
+  overflow:hidden;
+  border-radius:22px;
+  background:#f4dbe7;
+  box-shadow:var(--shadow);
+  isolation:isolate
+}
+.hero-inner:before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,rgba(65,35,53,.62),rgba(65,35,53,.25) 55%,transparent),url('imagens/sakura.gif') center 48%/cover;
+  z-index:-1;
+  filter:saturate(.9)
+}
+.hero-copy {
+  padding:42px 48px;
+  max-width:620px;
+  color:white
+}
+.eyebrow {
+  font-size:10px;
+  letter-spacing:2.8px;
+  text-transform:uppercase;
+  font-weight:900;
+  color:#ffe3ed
+}
+.hero h1 {
+  font:clamp(34px,5vw,55px)/1.06 'DM Serif Display',serif;
+  margin:12px 0;
+  color:#fff;
+  letter-spacing:-.7px
+}
+.hero p {
+  max-width:430px;
+  color:#fff1f6;
+  margin:0 0 22px;
+  font-size:14px
+}
+.hero .btn {
+  background:#fff;
+  color:#bd5d87;
+  box-shadow:none
+}
+main {
+  max-width:1240px;
+  min-height:62vh;
+  margin:22px auto;
+  padding:12px 25px 45px
+}
+.section-head {
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:15px;
+  margin:12px 0 18px
+}
+.section-head h2,h2 {
+  margin:0;
+  color:#b85d86;
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:-.7px
+}
+.section-head p {
+  margin:3px 0 0;
+  color:#a88d9a;
+  font-size:12px
+}
+.catalog-tools {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin:18px 0 22px
+}
+.search-wrap {
+  position:relative;
+  flex:1
+}
+.search-wrap:before {
+  content:'⌕';
+  position:absolute;
+  left:14px;
+  top:6px;
+  color:#c7839f;
+  font-size:22px
+}
+.catalog-tools input,.catalog-tools select {
+  margin:0;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  color:#725363;
+  font:inherit;
+  outline:none
+}
+.catalog-tools input {
+  padding-left:42px;
+  width:100%
+}
+.catalog-tools select {
+  min-width:155px
+}
+.catalog-tools input:focus,.catalog-tools select:focus,input:focus,textarea:focus {
+  border-color:#df91ae;
+  box-shadow:0 0 0 3px #fbe5ee
+}
+.catalog-layout {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 250px;
+  gap:25px;
+  align-items:start
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(155px,1fr));
+  gap:18px
+}
+.card {
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:10px;
+  background:rgba(255,255,255,.92);
+  border:1px solid #f0dfe7;
+  border-radius:15px;
+  box-shadow:0 5px 18px rgba(133,74,102,.055);
+  transition:.22s
+}
+.card:hover {
+  transform:translateY(-5px);
+  box-shadow:0 13px 28px rgba(133,74,102,.13);
+  border-color:#e9bfd0
+}
+.card img,.sem-capa {
+  width:100%;
+  aspect-ratio:2/2.8;
+  object-fit:cover;
+  border-radius:10px;
+  background:#fceaf1
+}
+.sem-capa {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#cf86a3;
+  font-weight:900
+}
+.card h3 {
+  font-size:14px;
+  margin:3px 0 0;
+  line-height:1.35;
+  color:#684657
+}
+.card p {
+  font-size:11px;
+  color:#a18a95;
+  margin:0;
+  line-height:1.5;
+  flex:1;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden
+}
+.card .btn {
+  align-self:stretch;
+  padding:8px;
+  font-size:11px
+}
+.side-panel {
+  display:grid;
+  gap:14px
+}
+.side-box {
+  overflow:hidden;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:var(--shadow)
+}
+.side-box h3 {
+  font-size:13px;
+  margin:0;
+  padding:13px 15px;
+  border-bottom:1px solid #f5e7ed;
+  color:#9c5878
+}
+.side-box p {
+  font-size:11px;
+  color:#9a8290;
+  padding:0 15px 13px;
+  margin:9px 0 0
+}
+.side-art {
+  height:155px;
+  width:100%;
+  object-fit:cover;
+  object-position:center 28%;
+  display:block
+}
+.side-art.blue {
+  object-position:center 20%
+}
+.side-caption {
+  padding:10px 13px 13px
+}
+.side-caption strong {
+  font-size:12px;
+  color:#795367
+}
+.side-caption span {
+  display:block;
+  font-size:10px;
+  color:#b18d9e
+}
+section {
+  margin-top:18px;
+  animation:appear .35s ease
+}
+@keyframes appear {
+  from {
+    opacity:0;
+    transform:translateY(8px)
+  }
+  to {
+    opacity:1;
+    transform:none
+  }
+}
+h2:after {
+  content:'';
+  display:block;
+  width:38px;
+  height:3px;
+  border-radius:9px;
+  margin-top:7px;
+  background:#eaa9c0
+}
+h3 {
+  color:#795365
+}
+p {
+  color:#876e7a
+}
+.status,.vazio {
+  color:#b18e9e
+}
+.vazio {
+  padding:25px;
+  text-align:center;
+  background:#fff;
+  border:1px dashed #eccbd9;
+  border-radius:14px
+}
+.btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  padding:10px 17px;
+  border:0;
+  border-radius:11px;
+  background:linear-gradient(135deg,#eaa5bf,#ce7098);
+  color:white;
+  text-decoration:none;
+  font:inherit;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 5px 14px #df8eae35;
+  transition:.2s
+}
+.btn:hover {
+  transform:translateY(-2px);
+  filter:brightness(1.04)
+}
+.sec {
+  padding:8px 12px;
+  border-radius:9px;
+  border:1px solid #efd5e0;
+  background:#fff5f8;
+  color:#ae6c89;
+  font:inherit;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer
+}
+.sec:hover {
+  background:#fce4ed
+}
+label {
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  margin:14px 0;
+  color:#a4778c;
+  font-size:12px;
+  font-weight:800
+}
+input,select,textarea {
+  width:100%;
+  padding:11px 13px;
+  border-radius:11px;
+  border:1px solid #efdce5;
+  outline:none;
+  background:#fff;
+  color:#67495a;
+  font:inherit;
+  font-size:13px
+}
+textarea {
+  resize:vertical
+}
+#login,#painel {
+  padding:22px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#fff;
+  box-shadow:var(--shadow)
+}
+#painel h3 {
+  padding-bottom:9px;
+  border-bottom:1px solid #f4dce6;
+  margin-top:28px
+}
+.row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:12px 4px;
+  border-bottom:1px solid #f6e4eb;
+  font-size:12px;
+  color:#795365
+}
+.row small {
+  color:#b18e9e
+}
+ul,ol {
+  padding-left:25px;
+  color:#876e7a
+}
+li {
+  padding:5px 0
+}
+footer {
+  margin-top:35px;
+  padding:28px 24px 22px;
+  border-top:1px solid #f1dce5;
+  text-align:center;
+  background:rgba(255,255,255,.45);
+  color:#b18e9e;
+  font-size:12px
+}
+footer nav {
+  justify-content:center;
+  margin-bottom:12px
+}
+footer nav a {
+  font-size:11px;
+  padding:6px 9px
+}
+footer p {
+  color:#b18e9e
+}
+footer .foot-mark {
+  font:20px 'DM Serif Display',serif;
+  color:#c97899;
+  margin-bottom:6px
+}
+::-webkit-scrollbar {
+  width:8px
+}
+::-webkit-scrollbar-track {
+  background:#fff2f7
+}
+::-webkit-scrollbar-thumb {
+  background:#e9a3bd;
+  border-radius:20px
+}
+@media(max-width:850px) {
+  header {
+    position:relative;
+    flex-wrap:wrap;
+    justify-content:center;
+    padding:13px 16px
+  }
+  .header-right {
+    display:none
+  }
+  .catalog-layout {
+    grid-template-columns:1fr
+  }
+  .side-panel {
+    grid-template-columns:repeat(2,minmax(0,1fr))
+  }
+  .side-panel .side-box:last-child {
+    grid-column:1/-1
+  }
+  .side-panel .side-box:last-child .side-art {
+    height:130px
+  }
+}
+@media(max-width:600px) {
+  .hero {
+    padding:0 12px;
+    margin-top:12px
+  }
+  .hero-inner {
+    min-height:220px;
+    border-radius:16px
+  }
+  .hero-copy {
+    padding:30px 24px
+  }
+  .hero h1 {
+    font-size:36px
+  }
+  .hero p {
+    font-size:12px
+  }
+  .hero-inner:before {
+    background:linear-gradient(90deg,rgba(65,35,53,.72),rgba(65,35,53,.36)),url('imagens/sakura.gif') center/cover
+  }
+  main {
+    padding:10px 13px 35px;
+    margin:14px auto
+  }
+  .logo {
+    width:100%;
+    text-align:center
+  }
+  .catalog-tools {
+    align-items:stretch;
+    flex-direction:column
+  }
+  .catalog-tools select {
+    width:100%
+  }
+  .grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:11px
+  }
+  .card {
+    padding:8px;
+    border-radius:12px
+  }
+  .card h3 {
+    font-size:12px
+  }
+  .side-panel {
+    gap:9px
+  }
+  .side-art {
+    height:115px
+  }
+  .section-head h2,h2 {
+    font-size:22px
+  }
+  #login,#painel {
+    padding:15px
+  }
+  .row {
+    flex-wrap:wrap
+  }
+  footer {
+    padding:20px 10px
+  }
+}
+  </style>
+ </head>
+ <body>
+  <div class="topline">
+  </div>
+  <header>
+   <a class="logo" data-nome="" href="#inicio">
+    Minha Biblioteca
+   </a>
+   <nav>
+    <a href="#inicio">
+     In&iacute;cio
+    </a>
+    <a href="#livros">
+     Livros
+    </a>
+    <a href="#mangas">
+     Mang&aacute;s
+    </a>
+    <a href="#obras">
+     Obras
+    </a>
+    <a href="#discord">
+     Comunidade
+    </a>
+    <a data-dono="" hidden="" href="#admin">
+     Admin
+    </a>
+   </nav>
+   <div class="header-right">
+    <span class="header-tag">
+     ✦ seu pr&oacute;ximo mundo come&ccedil;a aqui
+    </span>
+   </div>
+  </header>
+  <div class="hero" data-home="">
+   <div class="hero-inner">
+    <div class="hero-copy">
+     <span class="eyebrow">
+      ✦ biblioteca digital
+     </span>
+     <h1>
+      Um universo
+      <br/>
+      entre p&aacute;ginas.
+     </h1>
+     <p>
+      Descubra hist&oacute;rias, acompanhe suas obras favoritas e encontre sua pr&oacute;xima leitura.
+     </p>
+     <a class="btn" href="#livros">
+      Explorar biblioteca　&rarr;
+     </a>
+    </div>
+   </div>
+  </div>
+  <main>
+   <section data-v="inicio,livros,mangas,obras">
+    <div class="section-head">
+     <div>
+      <h2 id="catalog-title">
+       Explore a biblioteca
+      </h2>
+      <p data-sobre="">
+      </p>
+     </div>
+     <span class="header-tag">
+      CAT&Aacute;LOGO ✧
+     </span>
+    </div>
+    <div class="catalog-tools">
+     <div class="search-wrap">
+      <input id="search" placeholder="Buscar por t&iacute;tulo ou descri&ccedil;&atilde;o..." type="search"/>
+     </div>
+     <select id="sort">
+      <option value="recent">
+       Mais recentes
+      </option>
+      <option value="az">
+       Nome: A&ndash;Z
+      </option>
+      <option value="za">
+       Nome: Z&ndash;A
+      </option>
+     </select>
+    </div>
+    <p class="status" id="status">
+     Carregando&hellip;
+    </p>
+    <div class="catalog-layout">
+     <div class="grid" id="cards">
+     </div>
+     <aside class="side-panel" data-home="">
+      <div class="side-box">
+       <h3>
+        ✧ Um cantinho delicado
+       </h3>
+       <img alt="Ilustra&ccedil;&atilde;o de personagem em tons rosados" class="side-art" loading="lazy" src="imagens/personagem-rosa.jpg"/>
+       <div class="side-caption">
+        <strong>
+         Entre e fique &agrave; vontade
+        </strong>
+        <span>
+         Hist&oacute;rias para todos os momentos.
+        </span>
+       </div>
+      </div>
+      <div class="side-box">
+       <h3>
+        ✧ Hora de ler
+       </h3>
+       <img alt="Ilustra&ccedil;&atilde;o de personagem de cabelo azul" class="side-art blue" loading="lazy" src="imagens/personagem-azul.jpg"/>
+       <div class="side-caption">
+        <strong>
+         Seu pr&oacute;ximo cap&iacute;tulo
+        </strong>
+        <span>
+         Uma nova descoberta espera por voc&ecirc;.
+        </span>
+       </div>
+      </div>
+      <div class="side-box">
+       <h3>
+        Sobre a biblioteca
+       </h3>
+       <p>
+        Um espa&ccedil;o organizado para reunir livros, mang&aacute;s e projetos autorais em um s&oacute; lugar.
+       </p>
+      </div>
+     </aside>
+    </div>
+   </section>
+   <section data-v="discord" hidden="">
+    <h2>
+     Comunidade no Discord
+    </h2>
+    <p>
+     Entre no servidor para conversar, tirar d&uacute;vidas e acompanhar novidades.
+    </p>
+    <a class="btn" data-discord="" rel="noopener" target="_blank">
+     Entrar no Discord &nearrow;
+    </a>
+   </section>
+   <section data-v="admin" hidden="">
+    <div hidden="" id="login">
+     <h2>
+      Entrar como dono
+     </h2>
+     <p class="status">
+      Cole o token do GitHub. Ele fica salvo s&oacute; neste navegador.
+     </p>
+     <label>
+      Token
+      <input autocomplete="off" id="tk" type="password"/>
+     </label>
+     <p>
+      <button class="btn" id="btk">
+       Entrar
+      </button>
+      <span class="status" id="lstatus">
+      </span>
+     </p>
+    </div>
+    <div hidden="" id="painel">
+     <h2>
+      Painel administrativo
+     </h2>
+     <p>
+      Gerencie as publica&ccedil;&otilde;es e as configura&ccedil;&otilde;es da biblioteca.
+     </p>
+     <h3 id="ftitle">
+      Novo item
+     </h3>
+     <label>
+      T&iacute;tulo
+      <input id="f-titulo"/>
+     </label>
+     <label>
+      Tipo
+      <select id="f-tipo">
+       <option value="livro">
+        Livro
+       </option>
+       <option value="manga">
+        Mang&aacute;
+       </option>
+       <option value="obra">
+        Obra
+       </option>
+      </select>
+     </label>
+     <label>
+      Descri&ccedil;&atilde;o
+      <textarea id="f-desc" rows="3"></textarea>
+     </label>
+     <label>
+      Capa (imagem)
+      <input accept="image/*" id="f-capa" type="file"/>
+     </label>
+     <label>
+      Arquivo (PDF, at&eacute; 20 MB)
+      <input accept="application/pdf" id="f-arquivo" type="file"/>
+     </label>
+     <label>
+      Ou link do arquivo
+      <input id="f-link" placeholder="https://..."/>
+     </label>
+     <p>
+      <button class="btn" id="bsalvar">
+       Publicar
+      </button>
+      <button class="sec" hidden="" id="bcancel">
+       Cancelar
+      </button>
+      <span class="status" id="fstatus">
+      </span>
+     </p>
+     <h3>
+      Publicados
+     </h3>
+     <div id="alist">
+     </div>
+     <h3>
+      Configura&ccedil;&otilde;es do site
+     </h3>
+     <label>
+      Nome do site
+      <input id="c-nome"/>
+     </label>
+     <label>
+      Frase de apresenta&ccedil;&atilde;o
+      <input id="c-sobre"/>
+     </label>
+     <label>
+      Link do Discord
+      <input id="c-discord"/>
+     </label>
+     <label>
+      E-mail de contato (usado no DMCA)
+      <input id="c-email" type="email"/>
+     </label>
+     <p>
+      <button class="btn" id="bcfg">
+       Salvar configura&ccedil;&otilde;es
+      </button>
+      <span class="status" id="cstatus">
+      </span>
+     </p>
+     <p>
+      <button class="sec" id="bsair">
+       Sair deste navegador
+      </button>
+     </p>
+    </div>
+   </section>
+   <section data-v="diretrizes" hidden="">
+    <h2>
+     Diretrizes da comunidade
+    </h2>
+    <p>
+     Publique apenas obras de sua autoria ou que voc&ecirc; tenha autoriza&ccedil;&atilde;o para compartilhar. Ao usar o site e o Discord, voc&ecirc; concorda em:
+    </p>
+    <ul>
+     <li>
+      respeitar autores e criadores;
+     </li>
+     <li>
+      n&atilde;o publicar conte&uacute;do sexual envolvendo menores, discurso de &oacute;dio, amea&ccedil;as, golpes, spam ou material ilegal;
+     </li>
+     <li>
+      manter o respeito nas conversas, sem ass&eacute;dio, ofensas ou exposi&ccedil;&atilde;o de dados de outras pessoas.
+     </li>
+    </ul>
+    <p>
+     Conte&uacute;dos que descumpram estas regras podem ser removidos sem aviso pr&eacute;vio.
+    </p>
+   </section>
+   <section data-v="dmca" hidden="">
+    <h2>
+     Pol&iacute;tica DMCA
+    </h2>
+    <p>
+     Respeitamos os direitos autorais. Se voc&ecirc; &eacute; titular de uma obra publicada aqui sem autoriza&ccedil;&atilde;o, envie uma notifica&ccedil;&atilde;o com:
+    </p>
+    <ol>
+     <li>
+      identifica&ccedil;&atilde;o da obra protegida e, se poss&iacute;vel, onde ela foi publicada originalmente;
+     </li>
+     <li>
+      identifica&ccedil;&atilde;o do conte&uacute;do que pede remo&ccedil;&atilde;o e o link onde ele est&aacute; no site;
+     </li>
+     <li>
+      seus dados de contato (nome, endere&ccedil;o, telefone e e-mail);
+     </li>
+     <li>
+      declara&ccedil;&atilde;o de boa-f&eacute; de que o uso n&atilde;o foi autorizado pelo titular, por seu representante ou pela lei;
+     </li>
+     <li>
+      declara&ccedil;&atilde;o, sob pena de falso testemunho, de que as informa&ccedil;&otilde;es s&atilde;o exatas e de que voc&ecirc; &eacute; o titular ou est&aacute; autorizado a agir em nome dele;
+     </li>
+     <li>
+      sua assinatura, f&iacute;sica ou eletr&ocirc;nica.
+     </li>
+    </ol>
+    <p>
+     Envie para
+     <span data-email="">
+     </span>
+     . Ao receber uma notifica&ccedil;&atilde;o v&aacute;lida, o conte&uacute;do poder&aacute; ser removido do site e do reposit&oacute;rio. Quem teve conte&uacute;do removido pode enviar uma contranotifica&ccedil;&atilde;o para o mesmo e-mail. Esta pol&iacute;tica tamb&eacute;m segue a Lei 9.610/1998.
+    </p>
+   </section>
+   <section data-v="termos" hidden="">
+    <h2>
+     Termos de uso
+    </h2>
+    <p>
+     Ao publicar conte&uacute;do aqui, voc&ecirc; declara que tem os direitos sobre ele ou autoriza&ccedil;&atilde;o para compartilh&aacute;-lo. O site &eacute; oferecido como est&aacute;, sem garantia de disponibilidade. O administrador pode remover ou alterar conte&uacute;dos a qualquer momento. O uso de cada obra segue as condi&ccedil;&otilde;es indicadas na pr&oacute;pria publica&ccedil;&atilde;o.
+    </p>
+   </section>
+   <section data-v="privacidade" hidden="">
+    <h2>
+     Privacidade
+    </h2>
+    <p>
+     Este site n&atilde;o coleta dados pessoais dos visitantes. O conte&uacute;do fica no reposit&oacute;rio p&uacute;blico do GitHub, que segue as pr&oacute;prias pol&iacute;ticas de privacidade. O token de acesso do administrador fica salvo apenas no navegador dele.
+    </p>
+   </section>
+   <section data-v="contato" hidden="">
+    <h2>
+     Contato
+    </h2>
+    <p>
+     E-mail:
+     <span data-email="">
+     </span>
+    </p>
+    <p>
+     Voc&ecirc; tamb&eacute;m pode falar pelo Discord.
+    </p>
+   </section>
+  </main>
+  <footer>
+   <div class="foot-mark" data-nome="">
+    Minha Biblioteca
+   </div>
+   <nav>
+    <a href="#diretrizes">
+     Diretrizes
+    </a>
+    <a href="#dmca">
+     DMCA
+    </a>
+    <a href="#termos">
+     Termos
+    </a>
+    <a href="#privacidade">
+     Privacidade
+    </a>
+    <a href="#contato">
+     Contato
+    </a>
+    <a data-discord="" rel="noopener" target="_blank">
+     Discord
+    </a>
+   </nav>
+   <p>
+    &copy;
+    <span id="ano">
+    </span>
+    <span data-nome="">
+    </span>
+    &middot; Feito para quem ama hist&oacute;rias.
+   </p>
+  </footer>
+  <script>
+   const VIEWS = ["inicio", "livros", "mangas", "obras", "discord", "admin", "diretrizes", "dmca", "termos", "privacidade", "contato"];
+const DEF = { nome: "Minha Biblioteca", sobre: "Livros, mangás e obras autorais.", discord: "https://discord.gg/VVkCX8zZpC", email: "" };
+const TIPO = { livro: "Livro", manga: "Mangá", obra: "Obra" };
+const FILTRO = { livros: "livro", mangas: "manga", obras: "obra" };
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+const safe = u => /^(https?:\/\/|arquivos\/)/.test(u || "") ? u : "#";
+const msg = (t, el = "#status") => { $(el).textContent = t; };
+const OWNER = location.hostname.split(".")[0];
+const REPO = location.pathname.split("/")[1] || OWNER + ".github.io";
+const API = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/contents/";
+const enc = new TextEncoder(), dec = new TextDecoder();
+const b64 = u => { let s = ""; for (let i = 0; i < u.length; i += 0x8000)
+    s += String.fromCharCode(...u.subarray(i, i + 0x8000)); return btoa(s); };
+const unb64 = s => Uint8Array.from(atob(s.replace(/\s/g, "")), c => c.charCodeAt(0));
+const tk = () => localStorage.getItem("gh_token");
+let D = { config: {}, itens: [] }, loaded = false, editing = null;
+async function gh(path, opt = {}) {
+    const r = await fetch(API + path, { ...opt, headers: { Authorization: "Bearer " + tk(), Accept: "application/vnd.github+json", "Content-Type": "application/json" } });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok)
+        throw new Error(j.message || ("erro " + r.status));
+    return j;
+}
+async function carregar() {
+    try {
+        D = await (await fetch("dados.json?v=" + Date.now(), { cache: "no-store" })).json();
+        msg("");
+    }
+    catch (e) {
+        msg("Não consegui carregar o conteúdo agora. Tente recarregar a página.");
+    }
+    D.config = { ...DEF, ...(D.config || {}) };
+    D.itens = D.itens || [];
+    loaded = true;
+    applyCfg();
+    route();
+}
+const ordenados = () => [...D.itens].sort((a, b) => (b.criado || 0) - (a.criado || 0));
+function card(i) {
+    return `<article class="card">${i.capa ? `<img src="${safe(i.capa)}" alt="" loading="lazy">` : `<div class="sem-capa">${esc(TIPO[i.tipo])}</div>`}<h3>${esc(i.titulo)}</h3><p>${esc(i.descricao)}</p>${i.arquivo ? `<a class="btn" href="${safe(i.arquivo)}" target="_blank" rel="noopener">Abrir</a>` : ""}</article>`;
+}
+function render() {
+    if (!loaded)
+        return;
+    const v = location.hash.slice(1) || "inicio";
+    const f = FILTRO[v], q = (document.querySelector("#search")?.value || "").trim().toLocaleLowerCase("pt-BR");
+    const exemplos = [
+      {id:"demo-1",titulo:"Jardim de Papel",tipo:"manga",descricao:"Uma história delicada sobre encontros inesperados, memórias e novos começos.",capa:"https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=650&q=85",arquivo:"",criado:6},
+      {id:"demo-2",titulo:"A Biblioteca da Lua",tipo:"livro",descricao:"Entre páginas antigas, uma jovem encontra cartas que mudam tudo.",capa:"https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=650&q=85",arquivo:"",criado:5},
+      {id:"demo-3",titulo:"Além das Nuvens",tipo:"manga",descricao:"Uma aventura fantástica em um mundo suspenso acima das nuvens.",capa:"https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=650&q=85",arquivo:"",criado:4},
+      {id:"demo-4",titulo:"Pequenas Constelações",tipo:"obra",descricao:"Contos curtos sobre amizade, amadurecimento e descobrir o próprio caminho.",capa:"https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=650&q=85",arquivo:"",criado:3},
+      {id:"demo-5",titulo:"O Verão que Ficou",tipo:"livro",descricao:"Um romance de verão sobre escolhas, despedidas e segundas chances.",capa:"https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=650&q=85",arquivo:"",criado:2},
+      {id:"demo-6",titulo:"Rosas de Inverno",tipo:"manga",descricao:"Mistério e fantasia em uma cidade onde as flores nunca murcham.",capa:"https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=650&q=85",arquivo:"",criado:1}
+    ];
+    const base = D.itens.length ? ordenados() : exemplos;
+    let lista = base.filter(i => (!f || i.tipo === f) && (!q || (i.titulo + " " + i.descricao).toLocaleLowerCase("pt-BR").includes(q)));
+    const sort = document.querySelector("#sort")?.value || "recent";
+    if (sort === "az")
+        lista.sort((a, b) => a.titulo.localeCompare(b.titulo, "pt-BR"));
+    if (sort === "za")
+        lista.sort((a, b) => b.titulo.localeCompare(a.titulo, "pt-BR"));
+    const titles = { inicio: "Explore a biblioteca", livros: "Biblioteca de livros", mangas: "Biblioteca de mangás", obras: "Obras autorais" };
+    const title = document.querySelector("#catalog-title");
+    if (title)
+        title.textContent = titles[v] || "Explore a biblioteca";
+    const status = $("#status");
+    if (!D.itens.length && !q) status.innerHTML = '<span class="demo-note">✦ PRÉVIA VISUAL · OBRAS FICTÍCIAS</span><br>Exemplos para visualizar o catálogo. Suas publicações aparecerão aqui.';
+    else if (status) status.textContent = lista.length + (lista.length === 1 ? " obra encontrada." : " obras encontradas.");
+    $("#cards").innerHTML = lista.length ? lista.map(i => card(i)).join("") : '<p class="vazio">Nada encontrado. Tente outra busca.</p>';
+    $("#alist").innerHTML = ordenados().map(i => `<div class="row"><span>${esc(i.titulo)} <small>(${esc(TIPO[i.tipo])})</small></span><span><button class="sec" data-act="edit" data-id="${esc(i.id)}">Editar</button> <button class="sec" data-act="del" data-id="${esc(i.id)}">Apagar</button></span></div>`).join("") || '<p class="vazio">Nenhum item ainda.</p>';
+}
+function route() {
+    let v = location.hash.slice(1) || "inicio";
+    if (!VIEWS.includes(v))
+        v = "inicio";
+    document.querySelectorAll("[data-v]").forEach(s => s.hidden = !s.dataset.v.split(",").includes(v));
+    document.querySelectorAll("[data-home]").forEach(e => e.hidden = v !== "inicio");
+    document.querySelectorAll("nav a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + v));
+    $("[data-dono]").hidden = !tk();
+    $("#login").hidden = !!tk();
+    $("#painel").hidden = !tk();
+    if (v === "admin" && tk())
+        fillCfg();
+    render();
+    scrollTo(0, 0);
+}
+function applyCfg() {
+    const c = D.config;
+    document.querySelectorAll("[data-nome]").forEach(e => e.textContent = c.nome);
+    document.querySelectorAll("[data-sobre]").forEach(e => e.textContent = c.sobre);
+    document.querySelectorAll("[data-discord]").forEach(e => e.href = safe(c.discord));
+    document.querySelectorAll("[data-email]").forEach(e => e.textContent = c.email || "ainda não configurado");
+    document.title = c.nome;
+    $("#ano").textContent = new Date().getFullYear();
+}
+function fillCfg() {
+    const c = D.config;
+    $("#c-nome").value = c.nome || "";
+    $("#c-sobre").value = c.sobre || "";
+    $("#c-discord").value = c.discord || "";
+    $("#c-email").value = c.email || "";
+}
+async function entrar() {
+    const t = $("#tk").value.trim();
+    if (!t)
+        return;
+    msg("Verificando…", "#lstatus");
+    try {
+        const r = await fetch("https://api.github.com/repos/" + OWNER + "/" + REPO, { headers: { Authorization: "Bearer " + t, Accept: "application/vnd.github+json" } });
+        if (!r.ok)
+            throw new Error("token inválido");
+        localStorage.setItem("gh_token", t);
+        $("#tk").value = "";
+        msg("", "#lstatus");
+        route();
+    }
+    catch (e) {
+        msg("Não entrou: " + e.message, "#lstatus");
+    }
+}
+function sair() { localStorage.removeItem("gh_token"); route(); }
+async function gravar(mudar, texto) {
+    const cur = await gh("dados.json");
+    const d = JSON.parse(dec.decode(unb64(cur.content)));
+    mudar(d);
+    d.config = { ...DEF, ...(d.config || {}) };
+    d.itens = d.itens || [];
+    await gh("dados.json", { method: "PUT", body: JSON.stringify({ message: texto, content: b64(enc.encode(JSON.stringify(d, null, 2))), sha: cur.sha }) });
+    D = d;
+    render();
+    applyCfg();
+}
+async function enviar(file) {
+    const nome = "arquivos/" + Date.now() + "-" + file.name.replace(/[^\w.-]+/g, "-");
+    await gh(nome, { method: "PUT", body: JSON.stringify({ message: "Adiciona " + file.name, content: b64(new Uint8Array(await file.arrayBuffer())) }) });
+    return nome;
+}
+async function salvarItem() {
+    msg("Publicando…", "#fstatus");
+    try {
+        const titulo = $("#f-titulo").value.trim();
+        if (!titulo)
+            throw new Error("coloque um título");
+        const fc = $("#f-capa").files[0], fa = $("#f-arquivo").files[0];
+        let link = $("#f-link").value.trim();
+        if (link && !/^https?:\/\//.test(link))
+            link = "https://" + link;
+        let capa = editing?.capa || "", arquivo = editing?.arquivo || "";
+        if (fc)
+            capa = await enviar(fc);
+        if (fa)
+            arquivo = await enviar(fa);
+        else if (link)
+            arquivo = link;
+        const id = editing?.id || Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        const item = { id, titulo, tipo: $("#f-tipo").value, descricao: $("#f-desc").value.trim(), capa, arquivo, criado: editing?.criado || Date.now() };
+        await gravar(d => { d.itens = d.itens.filter(i => i.id !== id); d.itens.push(item); }, "Publica: " + titulo);
+        limparForm();
+        msg("Publicado! O site atualiza em 1 a 2 minutos.", "#fstatus");
+    }
+    catch (e) {
+        msg("Não deu: " + e.message, "#fstatus");
+    }
+}
+function editar(id) {
+    editing = D.itens.find(i => i.id === id);
+    if (!editing)
+        return;
+    $("#f-titulo").value = editing.titulo || "";
+    $("#f-tipo").value = editing.tipo || "livro";
+    $("#f-desc").value = editing.descricao || "";
+    $("#f-link").value = /^https?:/.test(editing.arquivo || "") ? editing.arquivo : "";
+    $("#ftitle").textContent = "Editando: " + (editing.titulo || "");
+    $("#bsalvar").textContent = "Salvar alterações";
+    $("#bcancel").hidden = false;
+    scrollTo(0, 0);
+}
+function limparForm() {
+    editing = null;
+    ["#f-titulo", "#f-desc", "#f-link", "#f-capa", "#f-arquivo"].forEach(s => $(s).value = "");
+    $("#f-tipo").value = "livro";
+    $("#ftitle").textContent = "Novo item";
+    $("#bsalvar").textContent = "Publicar";
+    $("#bcancel").hidden = true;
+}
+async function apagar(id, b) {
+    if (b.dataset.ok !== "1") {
+        b.dataset.ok = "1";
+        b.textContent = "Confirmar?";
+        return;
+    }
+    msg("Apagando…", "#fstatus");
+    try {
+        const item = D.itens.find(i => i.id === id) || {};
+        await gravar(d => { d.itens = d.itens.filter(i => i.id !== id); }, "Remove: " + (item.titulo || id));
+        for (const p of [item.capa, item.arquivo]) {
+            if (!p || !p.startsWith("arquivos/"))
+                continue;
+            try {
+                const f = await gh(p);
+                await gh(p, { method: "DELETE", body: JSON.stringify({ message: "Remove arquivo", sha: f.sha }) });
+            }
+            catch (e) { }
+        }
+        msg("Apagado. O site atualiza em 1 a 2 minutos.", "#fstatus");
+    }
+    catch (e) {
+        msg("Não apagou: " + e.message, "#fstatus");
+    }
+}
+async function salvarCfg() {
+    msg("Salvando…", "#cstatus");
+    try {
+        const c = { nome: $("#c-nome").value.trim() || DEF.nome, sobre: $("#c-sobre").value.trim(), discord: $("#c-discord").value.trim(), email: $("#c-email").value.trim() };
+        await gravar(d => { d.config = c; }, "Atualiza configurações");
+        msg("Configurações salvas. O site atualiza em 1 a 2 minutos.", "#cstatus");
+    }
+    catch (e) {
+        msg("Não salvou: " + e.message, "#cstatus");
+    }
+}
+$("#btk").onclick = entrar;
+$("#bsair").onclick = sair;
+$("#bsalvar").onclick = salvarItem;
+$("#bcancel").onclick = limparForm;
+$("#bcfg").onclick = salvarCfg;
+$("#alist").onclick = e => { const b = e.target.closest("button"); if (!b)
+    return; b.dataset.act === "edit" ? editar(b.dataset.id) : apagar(b.dataset.id, b); };
+document.querySelector("#search").addEventListener("input", render);
+document.querySelector("#sort").addEventListener("change", render);
+addEventListener("hashchange", route);
+route();
+carregar();
+  </script>
+ </body>
+</html>
